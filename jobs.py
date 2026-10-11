@@ -1,16 +1,24 @@
 import csv
+import re
 import time
 
 import requests
 
 API_URL = "https://www.arbeitnow.com/api/job-board-api"
 KEYWORDS = ["werkstudent", "working student"]
-LOCATIONS = ["darmstadt", "frankfurt", "mainz", "mannheim"]
-TECH_WORDS = [
-    "software", "entwickl", "developer", "informatik", "python", "c++",
-    "java", "web", "data", "daten", "devops", "cloud", "security",
-    "qa", "test", "engineer", "backend", "frontend",
+LOCATIONS = [
+    "darmstadt", "frankfurt", "mainz", "wiesbaden", "mannheim",
+    "heidelberg", "offenbach", "rüsselsheim", "weiterstadt",
 ]
+TECH_PATTERN = re.compile(
+    r"(?<!\w)("
+    r"it|ai|ki|qa|api|sql|web|data|daten\w*|software|developer|"
+    r"entwickl\w*|informatik\w*|python|java|javascript|c\+\+|devops|cloud|"
+    r"security|sicherheit|engineer\w*|backend|frontend|test\w*|"
+    r"automation|analytics|netzwerk\w*|network\w*"
+    r")(?!\w)",
+    re.IGNORECASE,
+)
 
 
 def fetch_jobs(pages=5):
@@ -26,12 +34,12 @@ def fetch_jobs(pages=5):
 def matches(job):
     title = job.get("title", "").lower()
     location = job.get("location", "").lower()
-    tags = " ".join(job.get("tags") or []).lower()
+    tags = " ".join(job.get("tags") or [])
     is_student_job = any(word in title for word in KEYWORDS)
     is_nearby = job.get("remote", False) or any(
         city in location for city in LOCATIONS
     )
-    is_tech = any(word in f"{title} {tags}" for word in TECH_WORDS)
+    is_tech = bool(TECH_PATTERN.search(f"{title} {tags}"))
     return is_student_job and is_nearby and is_tech
 
 
