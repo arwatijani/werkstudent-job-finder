@@ -5,7 +5,7 @@ A Python script that finds IT working-student (Werkstudent) jobs in Germany usin
 ## Features
 
 - Fetches job listings from the Arbeitnow API (5 pages)
-- Keeps only Werkstudent jobs in Darmstadt, Frankfurt, Mainz, Mannheim or remote
+- Keeps only Werkstudent jobs in the Rhine-Main / Rhine-Neckar region (Darmstadt, Frankfurt, Mainz, Wiesbaden, Mannheim, Heidelberg...) or remote
 - Keeps only IT-related jobs (software, data, Python, Java...)
 - Removes duplicate listings
 - Prints the results and saves them to a CSV file
@@ -14,7 +14,7 @@ A Python script that finds IT working-student (Werkstudent) jobs in Germany usin
 
 - Python 3
 - requests (HTTP requests to a REST API)
-- csv and time (standard library)
+- re, csv and time (standard library)
 
 ## How to run
 
